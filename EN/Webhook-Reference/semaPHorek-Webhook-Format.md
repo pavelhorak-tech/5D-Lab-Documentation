@@ -225,7 +225,6 @@ return { json: { conditions: summary } };
 
 - [Your First Webhook Receiver](../Getting-Started/02-Your-First-Webhook.md)
 - [Testing Your Webhooks](../Getting-Started/03-Testing-Webhooks.md)
-- [Common Issues FAQ](../Troubleshooting/Common-Issues-FAQ.md)
 
 ---
 

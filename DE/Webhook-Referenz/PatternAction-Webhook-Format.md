@@ -306,7 +306,6 @@ Kontext:
 
 - [Erste Schritte mit Webhooks](../Erste-Schritte/02-Ihr-erster-Webhook.md)
 - [Webhooks testen](../Erste-Schritte/03-Webhooks-testen.md)
-- [Häufige Probleme FAQ](../Fehlerbehebung/Haeufige-Probleme-FAQ.md)
 
 ---
 

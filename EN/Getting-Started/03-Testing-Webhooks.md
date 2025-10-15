@@ -270,7 +270,6 @@ NODEtective NQ 15m: https://your-n8n.app/webhook/nodetective-nq
 
 - [Creating Your n8n Account](01-Creating-n8n-Account.md)
 - [Your First Webhook Receiver](02-Your-First-Webhook.md)
-- [Common Issues FAQ](../Troubleshooting/Common-Issues-FAQ.md)
 - [semaPHorek Webhook Format](../Webhook-Reference/semaPHorek-Webhook-Format.md)
 
 ---

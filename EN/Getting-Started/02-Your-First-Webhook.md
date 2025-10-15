@@ -299,7 +299,6 @@ Before modifying working workflow:
 - [Creating Your n8n Account](01-Creating-n8n-Account.md)
 - [Testing Your Webhooks](03-Testing-Webhooks.md)
 - [semaPHorek Webhook Format](../Webhook-Reference/semaPHorek-Webhook-Format.md)
-- [Common Issues FAQ](../Troubleshooting/Common-Issues-FAQ.md)
 
 ---
 

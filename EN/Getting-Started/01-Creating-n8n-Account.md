@@ -191,7 +191,6 @@ Add notes to complex workflows:
 
 - [Your First Webhook Receiver](02-Your-First-Webhook.md)
 - [Testing Your Webhooks](03-Testing-Webhooks.md)
-- [Common Issues FAQ](../Troubleshooting/Common-Issues-FAQ.md)
 
 ---
 
