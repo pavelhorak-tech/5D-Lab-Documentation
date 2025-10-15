@@ -9,22 +9,18 @@
 
 ### Erste Schritte
 - [n8n.io-Konto erstellen](Erste-Schritte/01-n8n-Konto-erstellen.md)
-- [Dein erster Webhook-Empfänger](Erste-Schritte/02-Dein-erster-Webhook.md)
+- [Dein erster Webhook-Empfänger](Erste-Schritte/02-Ihr-erster-Webhook.md)
 - [Webhooks testen](Erste-Schritte/03-Webhooks-testen.md)
 
 ### Webhook-Referenz
 Vollständige Webhook-Format-Dokumentation für alle Ultra-Indikatoren:
 - [semaPHorek Webhook-Format](Webhook-Referenz/semaPHorek-Webhook-Format.md)
 - [Linescope Webhook-Format](Webhook-Referenz/Linescope-Webhook-Format.md)
-- [NODEtective Webhook-Format](Webhook-Referenz/NODEtective-Webhook-Format.md)
 - [PatternAction Webhook-Format](Webhook-Referenz/PatternAction-Webhook-Format.md)
-- [R.A.I.N. Webhook-Format](Webhook-Referenz/RAIN-Webhook-Format.md)
 
-### Fehlerbehebung
-- [Häufige Probleme & Lösungen](Fehlerbehebung/Haeufige-Probleme-FAQ.md)
-
-### Ressourcen
-- [Kostenlose Markdown-Viewer](Ressourcen/Kostenlose-Markdown-Viewer.md)
+**Weitere Indikatoren (in Kürze):**
+- NODEtective - Webhook-Update in Entwicklung
+- R.A.I.N. - Webhook-Update in Arbeit
 
 ---
 
@@ -32,7 +28,7 @@ Vollständige Webhook-Format-Dokumentation für alle Ultra-Indikatoren:
 
 **Discord-Community:** [pavelhorak.tech Discord](https://discord.gg/vxWZt2XQUZ)
 **Website:** [5dlab.ph](https://5dlab.ph)
-**Support-Kanal:** #automation-help (Discord)
+**Support-Kanal:** #-chat oder #-diskussion (Discord)
 
 ---
 
@@ -53,8 +49,8 @@ Verwandle dich vom manuellen Signal-Beobachter zum systematischen Trading-Intell
 - 3 Grundlagen-Videos pro Monat
 - Vollständige Webhook-Dokumentation
 - n8n-Workflow-Vorlagen
-- Community-Support (#automation-help)
-- Showcase-Galerie (#showcase)
+- Community-Support (#-chat, #-diskussion)
+- Showcase-Galerie (#-showcase, #-galerie)
 
 **Preise:**
 - **Monat 1:** KOSTENLOSE Testversion (alle Ultra-Lizenzinhaber auf Lebenszeit)

@@ -16,23 +16,19 @@
 Complete webhook format documentation for all Ultra indicators:
 - [semaPHorek Webhook Format](Webhook-Reference/semaPHorek-Webhook-Format.md)
 - [Linescope Webhook Format](Webhook-Reference/Linescope-Webhook-Format.md)
-- [NODEtective Webhook Format](Webhook-Reference/NODEtective-Webhook-Format.md)
 - [PatternAction Webhook Format](Webhook-Reference/PatternAction-Webhook-Format.md)
-- [R.A.I.N. Webhook Format](Webhook-Reference/RAIN-Webhook-Format.md)
 
-### Troubleshooting
-- [Common Issues & Solutions](Troubleshooting/Common-Issues-FAQ.md)
-
-### Resources
-- [Free Markdown Viewers](Resources/Free-Markdown-Viewers.md)
+**Additional Indicators (Coming Soon):**
+- NODEtective - Webhook update in development
+- R.A.I.N. - Webhook update in progress
 
 ---
 
 ## 🎯 Quick Links
 
-**Discord Community:** [pavelhorak.tech Discord](https://discord.gg/your-invite-link)
+**Discord Community:** [pavelhorak.tech Discord](https://discord.gg/vxWZt2XQUZ)
 **Website:** [5dlab.ph](https://5dlab.ph)
-**Support Channel:** #automation-help (Discord)
+**Support Channel:** #-chat or #-diskussion (Discord)
 
 ---
 
@@ -53,8 +49,8 @@ Transform from manual signal watching to systematic trading intelligence through
 - 3 foundation videos per month
 - Complete webhook documentation
 - n8n workflow templates
-- Community support (#automation-help)
-- Showcase gallery (#showcase)
+- Community support (#-chat, #-diskussion)
+- Showcase gallery (#-showcase, #-galerie)
 
 **Pricing:**
 - Month 1: **FREE trial** (all lifetime Ultra license holders)
