@@ -1,11 +1,2 @@
-# OS Files
-.DS_Store
-Thumbs.db
-
-# Editor files
-.vscode/
-*.swp
-*.swo
-
-# Obsidian
-.obsidian/
+sync-docs.bat
+sync-from-obsidian.ps1
