@@ -133,7 +133,7 @@ Bevor du zum nächsten Leitfaden fortfährst:
 ## 🎓 Nächste Schritte
 
 **Du bist bereit!** Fahre fort mit:
-- [Dein erster Webhook-Empfänger](02-Dein-erster-Webhook.md) - Webhook-Node erstellen zum Empfang von ATAS-Signalen
+- [Dein erster Webhook-Empfänger](02-Ihr-erster-Webhook.md) - Webhook-Node erstellen zum Empfang von ATAS-Signalen
 - [Webhooks testen](03-Webhooks-testen.md) - Alles überprüfen funktioniert vor Live-Betrieb
 
 ---
@@ -189,9 +189,8 @@ Notizen zu komplexen Workflows hinzufügen:
 
 ## 📚 Verwandte Dokumentation
 
-- [Dein erster Webhook-Empfänger](02-Dein-erster-Webhook.md)
+- [Dein erster Webhook-Empfänger](02-Ihr-erster-Webhook.md)
 - [Webhooks testen](03-Webhooks-testen.md)
-- [Häufige Probleme FAQ](../Fehlerbehebung/Haeufige-Probleme-FAQ.md)
 
 ---
 
