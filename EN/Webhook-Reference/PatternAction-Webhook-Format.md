@@ -1,32 +1,149 @@
-# PatternAction - Webhook Format Reference
+# PatternAction Master (Ultra) - Webhook Format Reference
 
-> **Order Block and Breaker Block Detection**
-> Pure price action logic for institutional level identification
-
----
-
-## 📊 Message Format
-
-PatternAction sends JSON-formatted webhook messages via HTTP POST.
-
-**Content-Type:** `application/json`
+> **Order Block & Market Structure Intelligence**
+> Automated detection of Order Blocks, Breaker Blocks, CHoCH/BOS structure events, and lifecycle notifications with real-time webhooks
 
 ---
 
-## 📋 Example Message
+## 📊 Message Formats
+
+PatternAction sends two types of webhook payloads:
+
+### Order Block Events Payload
+
+```json
+{
+  "eventCode": "string",
+  "instrument": "string",
+  "timeframe": "string",
+  "datetime": "string",
+  "barTime": "string",
+  "side": "string",
+  "obBar": number,
+  "chartBar": number,
+  "obHigh": decimal,
+  "obLow": decimal,
+  "price": decimal | null
+}
+```
+
+### Structure Events Payload (CHoCH/BOS)
+
+```json
+{
+  "eventCode": "string",
+  "instrument": "string",
+  "timeframe": "string",
+  "datetime": "string",
+  "barTime": "string",
+  "structureType": "string",
+  "direction": "string",
+  "swingBar": number,
+  "breakBar": number,
+  "chartBar": number,
+  "price": decimal,
+  "breakPrice": decimal,
+  "touchPrice": decimal | null
+}
+```
+
+---
+
+## 📋 Example Messages
+
+### New Strong Order Block
 
 ```json
 {
   "eventCode": "NEWOBstrong",
-  "instrument": "MNQ",
-  "timeframe": "4Renko",
-  "datetime": "2025-10-15 14:23:45",
+  "instrument": "NQ",
+  "timeframe": "12RenkoTime",
+  "datetime": "28.01.2026 15:58:26",
+  "barTime": "28.01.2026 14:10:00",
   "side": "Support",
-  "obBar": 37500,
-  "chartBar": 37505,
-  "obHigh": 21125.50,
-  "obLow": 21120.25,
+  "obBar": 8272,
+  "chartBar": 8277,
+  "obHigh": 25740.50,
+  "obLow": 25737.25,
   "price": null
+}
+```
+
+### Strong OB Touch
+
+```json
+{
+  "eventCode": "OBstrongTOUCH",
+  "instrument": "NQ",
+  "timeframe": "12RenkoTime",
+  "datetime": "28.01.2026 15:58:39",
+  "barTime": "28.01.2026 14:10:45",
+  "side": "Support",
+  "obBar": 8272,
+  "chartBar": 8278,
+  "obHigh": 25740.50,
+  "obLow": 25737.25,
+  "price": 25740.50
+}
+```
+
+### New CHoCH (Change of Character)
+
+```json
+{
+  "eventCode": "NEWCHoCH",
+  "instrument": "ES",
+  "timeframe": "5MinuteTime",
+  "datetime": "28.01.2026 14:30:15",
+  "barTime": "28.01.2026 14:25:00",
+  "structureType": "CHoCH",
+  "direction": "Up",
+  "swingBar": 120,
+  "breakBar": 145,
+  "chartBar": 150,
+  "price": 5025.50,
+  "breakPrice": 5028.25,
+  "touchPrice": null
+}
+```
+
+### New BOS (Break of Structure)
+
+```json
+{
+  "eventCode": "NEWBoS",
+  "instrument": "ES",
+  "timeframe": "5MinuteTime",
+  "datetime": "28.01.2026 14:45:22",
+  "barTime": "28.01.2026 14:40:00",
+  "structureType": "BOS",
+  "direction": "Up",
+  "swingBar": 155,
+  "breakBar": 168,
+  "chartBar": 170,
+  "price": 5032.75,
+  "breakPrice": 5035.00,
+  "touchPrice": null
+}
+```
+
+### CHoCH Level Retest
+
+```json
+{
+  "eventCode": "CHoCHTOUCH",
+  "instrument": "ES",
+  "timeframe": "5MinuteTime",
+  "datetime": "28.01.2026 15:10:05",
+  "barTime": "28.01.2026 15:05:00",
+  "structureType": "CHoCH",
+  "direction": "Up",
+  "swingBar": 120,
+  "breakBar": 145,
+  "chartBar": 185,
+  "price": 5025.50,
+  "breakPrice": 5028.25,
+  "touchPrice": 5026.00
 }
 ```
 
@@ -34,280 +151,331 @@ PatternAction sends JSON-formatted webhook messages via HTTP POST.
 
 ## 🔍 Field Breakdown
 
-### Event Information
-- **eventCode:** Event type identifier (see Event Types table below)
-- **datetime:** Timestamp in format `YYYY-MM-DD HH:MM:SS` (local time)
+### Timestamps
+
+- **datetime:** System clock when webhook was sent (`DateTime.Now`)
+  - In live trading: current real-time
+  - In Market Replay: time when replay was running
+- **barTime:** Actual candle close time from the chart
+  - In live trading: matches `datetime` closely
+  - In Market Replay: shows the historical bar time
 
 ### Instrument & Timeframe
-- **instrument:** Trading symbol (e.g., `MNQ`, `ES`, `NQ`)
-- **timeframe:** Chart timeframe with type (e.g., `4Renko`, `5m`, `1h`)
 
-### Order Block Data
-- **side:** Order Block direction
-  - `Support` - Bullish Order Block (demand zone)
-  - `Resistance` - Bearish Order Block (supply zone)
-- **obBar:** Bar number where Order Block was formed
-- **chartBar:** Current bar number when event occurred
-- **obHigh:** Upper boundary of Order Block zone
-- **obLow:** Lower boundary of Order Block zone
-
-### Price Information
-- **price:** Current price at event time
-  - Present for touch events (`OBstrongTOUCH`, `OBweakTOUCH`, etc.)
-  - `null` for formation events (`NEWOBstrong`, `NEWOBweak`)
+- **instrument:** Trading symbol (e.g., `NQ`, `ES`, `MNQ`, `MES`)
+- **timeframe:** Chart timeframe + chart type (e.g., `12RenkoTime`, `5MinuteTime`, `1HourTime`)
 
 ---
 
-## 📋 Event Types
+## 📑 Complete Event Code Reference
 
-| Event Code | Description | When It Fires |
-|------------|-------------|---------------|
-| `NEWOBstrong` | New Strong Order Block confirmed | Strong institutional level identified |
-| `NEWOBweak` | New Weak Order Block confirmed | Weak institutional level identified |
-| `OBweakTOstrong` | Order Block upgraded | Weak OB tested and held, upgraded to Strong |
-| `OBweakTOUCH` | Weak Order Block touched | Price reached weak OB zone |
-| `OBstrongTOUCH` | Strong Order Block touched | Price reached strong OB zone |
-| `BBTOUCH` | Breaker Block touched | Price reached broken OB (now resistance/support) |
-| `OBvPOCTOUCH` | Order Block vPOC touched | Price touched Volume Point of Control within OB |
-| `OBtoBB` | Order Block converted to Breaker Block | OB broken, level flipped (support→resistance or vice versa) |
+### Order Block Events
 
----
+| Event Code | Description |
+|------------|-------------|
+| `NEWOBstrong` | New Order Block confirmed as Strong (aligned candle color) |
+| `NEWOBweak` | New Order Block confirmed as Weak (not color-aligned) |
+| `OBweakTOstrong` | Weak OB upgraded to Strong |
+| `OBstrongTOUCH` | Price touched a Strong OB zone |
+| `OBweakTOUCH` | Price touched a Weak OB zone |
+| `OBvPOCTOUCH` | Price touched the OB's volume POC level |
+| `OBtoBB` | OB invalidated and converted to Breaker Block |
 
-## 💡 Usage Examples
+### Breaker Block Events
 
-### Example 1: Order Block Formation Alert
+| Event Code | Description |
+|------------|-------------|
+| `BBTOUCH` | Price touched a Breaker Block zone |
+| `BBvPOCTOUCH` | Price touched the Breaker Block's volume POC level |
 
-**Webhook received:**
-```json
-{
-  "eventCode": "NEWOBstrong",
-  "instrument": "MNQ",
-  "timeframe": "4Renko",
-  "datetime": "2025-10-15 14:23:45",
-  "side": "Support",
-  "obBar": 37500,
-  "chartBar": 37505,
-  "obHigh": 21125.50,
-  "obLow": 21120.25,
-  "price": null
-}
-```
+### Structure Events (CHoCH/BOS)
 
-**Decoded information:**
-- Strong Support Order Block confirmed at MNQ
-- Zone: 21120.25 - 21125.50
-- Formed 5 bars ago (chartBar 37505 - obBar 37500)
-- Potential long entry area when price returns
-
-**n8n workflow action:**
-- Log to Google Sheets: Instrument, Side, Level, Timestamp
-- Send Telegram alert: "Strong Support OB confirmed MNQ 21120-21125"
-- Mark on chart database for future reference
+| Event Code | Description |
+|------------|-------------|
+| `NEWCHoCH` | Change of Character detected (trend reversal signal) |
+| `NEWBoS` | Break of Structure detected (trend continuation signal) |
+| `CHoCHTOUCH` | Price retested a CHoCH level |
+| `BoSTOUCH` | Price retested a BOS level |
 
 ---
 
-### Example 2: Order Block Touch Detection
+## 🎯 Event Type Interpretation
 
-**Webhook received:**
-```json
-{
-  "eventCode": "OBstrongTOUCH",
-  "instrument": "ES",
-  "timeframe": "5m",
-  "datetime": "2025-10-15 15:30:12",
-  "side": "Resistance",
-  "obBar": 12340,
-  "chartBar": 12380,
-  "obHigh": 5432.75,
-  "obLow": 5430.25,
-  "price": 5431.50
-}
-```
+### Order Block Creation Events
 
-**Decoded information:**
-- Strong Resistance Order Block touched
-- Current price: 5431.50 (within zone 5430.25-5432.75)
-- Order Block formed 40 bars ago
-- Potential short entry signal
+| Event | Meaning |
+|-------|---------|
+| `NEWOBstrong` | OB confirmed with aligned candle color (high conviction) |
+| `NEWOBweak` | OB confirmed but candle color not aligned (lower conviction) |
+| `OBweakTOstrong` | Previously weak OB now has aligned confirmation |
 
-**n8n workflow action:**
-- Check if this OB was previously logged in database
-- Count number of touches (first touch vs. multiple touches)
-- Calculate distance from current price to OB boundaries
-- Send priority alert if first touch of strong OB
+### Order Block Touch Events
 
----
+| Event | Meaning |
+|-------|---------|
+| `OBstrongTOUCH` | Price entered a Strong OB zone - potential reaction area |
+| `OBweakTOUCH` | Price entered a Weak OB zone - lower probability reaction |
+| `OBvPOCTOUCH` | Price hit the volume POC within an OB - precision level |
 
-### Example 3: Breaker Block Conversion
+### Breaker Block Events
 
-**Webhook received:**
-```json
-{
-  "eventCode": "OBtoBB",
-  "instrument": "NQ",
-  "timeframe": "15m",
-  "datetime": "2025-10-15 16:45:30",
-  "side": "Support",
-  "obBar": 8900,
-  "chartBar": 8920,
-  "obHigh": 21050.00,
-  "obLow": 21045.00,
-  "price": 21043.50
-}
-```
+| Event | Meaning |
+|-------|---------|
+| `OBtoBB` | OB was broken through and converted to Breaker Block (role reversal) |
+| `BBTOUCH` | Price returned to a Breaker Block zone |
+| `BBvPOCTOUCH` | Price hit the volume POC within a Breaker Block - precision level |
 
-**Decoded information:**
-- Support Order Block broken (price closed below obLow)
-- Zone 21045-21050 now becomes Resistance (Breaker Block)
-- Price currently at 21043.50 (below broken zone)
-- Market structure changed
+### Structure Events
 
-**n8n workflow action:**
-- Update database: Mark OB as "Broken"
-- Change bias: Previous Support → now Resistance
-- Cancel any long alerts for this zone
-- Create new short alert if price returns to zone
+| Event | Meaning |
+|-------|---------|
+| `NEWCHoCH` | Trend reversal signal - previous swing high/low broken against trend |
+| `NEWBoS` | Trend continuation signal - previous swing high/low broken with trend |
+| `CHoCHTOUCH` | Price returned to retest the CHoCH swing level |
+| `BoSTOUCH` | Price returned to retest the BOS swing level |
 
 ---
 
-### Example 4: Multi-Timeframe Confluence
+## 📐 Structure Event Fields
 
-**Scenario:** PatternAction on both 5m and 15m charts, same instrument.
+### Structure-Specific Fields
 
-**Webhook 1 (5m chart):**
-```json
-{
-  "eventCode": "NEWOBstrong",
-  "instrument": "MNQ",
-  "timeframe": "5m",
-  "side": "Support",
-  "obHigh": 21125.50,
-  "obLow": 21120.00
-}
-```
+- **structureType:** Either `CHoCH` or `BOS`
+- **direction:** Current market structure direction (`Up`, `Down`, or `Unknown`)
+- **swingBar:** Bar index where the swing high/low was formed
+- **breakBar:** Bar index where the swing was broken (structure event occurred)
+- **price:** Price level of the swing point (the structure level)
+- **breakPrice:** Price at which the break occurred
+- **touchPrice:** Price when the level was retested (only on touch events, `null` otherwise)
 
-**Webhook 2 (15m chart):**
-```json
-{
-  "eventCode": "NEWOBstrong",
-  "instrument": "MNQ",
-  "timeframe": "15m",
-  "side": "Support",
-  "obHigh": 21126.00,
-  "obLow": 21119.50
-}
-```
+### Order Block-Specific Fields
 
-**Decoded information:**
-- Both timeframes show Strong Support OB at ~21120-21126
-- Multi-timeframe alignment (higher probability zone)
-- Overlapping levels: 21120.00 - 21125.50
-
-**n8n workflow action:**
-- Compare OB levels across timeframes
-- Detect overlap (if obLow_tf1 <= obHigh_tf2 AND obHigh_tf1 >= obLow_tf2)
-- Calculate overlap zone: MAX(obLow_tf1, obLow_tf2) to MIN(obHigh_tf1, obHigh_tf2)
-- Send confluence alert with overlap zone
-
----
-
-### Example 5: Order Block Performance Database
-
-**Database schema (Google Sheets / Airtable):**
-
-| Timestamp | Instrument | Timeframe | Side | Event | obLow | obHigh | Price | Status |
-|-----------|------------|-----------|------|-------|-------|--------|-------|--------|
-| 14:23:45 | MNQ | 4Renko | Support | NEWOBstrong | 21120.25 | 21125.50 | - | Active |
-| 15:30:12 | MNQ | 4Renko | Support | OBstrongTOUCH | 21120.25 | 21125.50 | 21121.00 | Tested |
-| 15:35:08 | MNQ | 4Renko | Support | OBstrongTOUCH | 21120.25 | 21125.50 | 21119.50 | Tested |
-| 16:10:22 | MNQ | 4Renko | Support | OBtoBB | 21120.25 | 21125.50 | 21118.00 | Broken |
-
-**Analysis capabilities:**
-- Count touches before break (this OB: 2 touches, then broken)
-- Calculate hold percentage (strong vs weak OBs)
-- Track time between formation and first touch
-- Measure distance traveled after OB touch (win/loss tracking)
+- **side:** `Support` (bullish OB) or `Resistance` (bearish OB)
+- **obBar:** Bar index where the Order Block was originally created
+- **obHigh:** Upper boundary of the OB zone
+- **obLow:** Lower boundary of the OB zone
+- **price:** Trigger price (only present on touch events, `null` for creation events)
 
 ---
 
 ## 🔧 n8n Webhook Configuration
 
-### Webhook Node Setup
-1. Create webhook node in n8n
-2. Set HTTP Method: `POST`
-3. Set Path: `patternaction` (or descriptive name)
-4. Authentication: None (add security in production if needed)
-5. Response: Immediately
+### Webhook URL Setup
 
-### Example Production URL
-```
-https://your-n8n.app/webhook/patternaction-mnq
+1. Create a Webhook node in n8n (POST method)
+2. Copy the webhook URL (e.g., `https://your-n8n.com/webhook/patternaction`)
+3. Configure in ATAS indicator settings:
+   - Enable the **Webhook URL** checkbox
+   - Paste the URL into the Webhook URL field
+
+### Parsing Example - Order Block Events
+
+```javascript
+// Parse PatternAction OB webhook
+const body = $input.all()[0].json.body;
+
+const eventCode = body.eventCode || '';
+const instrument = body.instrument || '';
+const timeframe = body.timeframe || '';
+const datetime = body.datetime || '';
+const barTime = body.barTime || '';
+const side = body.side || '';
+const obBar = body.obBar ?? '';
+const chartBar = body.chartBar ?? '';
+const obHigh = body.obHigh != null ? parseFloat(body.obHigh).toFixed(2) : '';
+const obLow = body.obLow != null ? parseFloat(body.obLow).toFixed(2) : '';
+const price = body.price != null ? parseFloat(body.price).toFixed(2) : '';
+
+return [{
+  json: {
+    eventCode, instrument, timeframe, datetime, barTime,
+    side, obBar, chartBar, obHigh, obLow, price
+  }
+}];
 ```
 
-### ATAS Indicator Configuration
-1. Open PatternAction indicator settings
-2. Find "Webhook" section
-3. Enable Webhook: ✅ ON
-4. Webhook URL: Paste n8n webhook URL
-5. Click OK
+### Parsing Example - Structure Events
+
+```javascript
+// Parse PatternAction Structure webhook
+const body = $input.all()[0].json.body;
+
+const eventCode = body.eventCode || '';
+const instrument = body.instrument || '';
+const timeframe = body.timeframe || '';
+const datetime = body.datetime || '';
+const barTime = body.barTime || '';
+const structureType = body.structureType || '';
+const direction = body.direction || '';
+const swingBar = body.swingBar ?? '';
+const breakBar = body.breakBar ?? '';
+const chartBar = body.chartBar ?? '';
+const price = body.price != null ? parseFloat(body.price).toFixed(2) : '';
+const breakPrice = body.breakPrice != null ? parseFloat(body.breakPrice).toFixed(2) : '';
+const touchPrice = body.touchPrice != null ? parseFloat(body.touchPrice).toFixed(2) : '';
+
+return [{
+  json: {
+    eventCode, instrument, timeframe, datetime, barTime,
+    structureType, direction, swingBar, breakBar, chartBar,
+    price, breakPrice, touchPrice
+  }
+}];
+```
+
+### Filter by Event Category
+
+```javascript
+// Route based on event type
+const obEvents = ['NEWOBstrong', 'NEWOBweak', 'OBweakTOstrong',
+                  'OBstrongTOUCH', 'OBweakTOUCH', 'OBvPOCTOUCH', 'OBtoBB'];
+const bbEvents = ['BBTOUCH', 'BBvPOCTOUCH'];
+const structureEvents = ['NEWCHoCH', 'NEWBoS', 'CHoCHTOUCH', 'BoSTOUCH'];
+
+const code = $json.eventCode;
+
+if (obEvents.includes(code)) {
+  return { json: { ...items[0].json, category: 'OrderBlock' } };
+} else if (bbEvents.includes(code)) {
+  return { json: { ...items[0].json, category: 'BreakerBlock' } };
+} else if (structureEvents.includes(code)) {
+  return { json: { ...items[0].json, category: 'Structure' } };
+}
+return null;
+```
+
+### Filter Structure Events Only
+
+```javascript
+// Only process CHoCH and BOS events
+const structureEvents = ['NEWCHoCH', 'NEWBoS', 'CHoCHTOUCH', 'BoSTOUCH'];
+if (structureEvents.includes($json.eventCode)) {
+  return $input.item;
+} else {
+  return null;
+}
+```
 
 ---
 
-## 📱 Example Telegram Alert Format
+## 📱 Discord Alert Examples
 
-**Simple alert:**
+### Order Block Alert
+
 ```
-📊 PatternAction Alert
-
-Event: Strong Support OB Touch
-Instrument: MNQ 4Renko
-Level: 21120.25 - 21125.50
-Price: 21121.00
-Time: 15:30:12
+PATTERNACTION - ORDER BLOCK
+event: Strong OB Touch
+bar time: 28.01.2026 14:10:45
+sent at: 28.01.2026 15:58:39
+instrument: NQ
+timeframe: 12Renko
+side: Support
+OB zone: 25737.25 - 25740.50
+price: 25740.50
+OB bar: 8272  |  chart bar: 8278
+--------------------------------------------
 ```
 
-**Advanced alert with context:**
+### Structure Alert
+
 ```
-📊 PatternAction | MNQ 4Renko
+PATTERNACTION - STRUCTURE
+event: CHoCH (Change of Character)
+bar time: 28.01.2026 14:25:00
+sent at: 28.01.2026 14:30:15
+instrument: ES
+timeframe: 5Min
+direction: Up
+swing level: 5025.50
+break price: 5028.25
+swing bar: 120  |  break bar: 145
+--------------------------------------------
+```
 
-🟢 Strong Support OB Touch
-Zone: 21120.25 - 21125.50
-Current: 21121.00
+---
 
-Context:
-• Formed: 40 bars ago
-• Touches: 1st touch
-• Multi-TF: ✅ Aligned with 15m
+## ⚙️ Event Lifecycle Tracking
+
+### Order Block Lifecycle
+
+A typical Order Block lifecycle produces webhooks in this sequence:
+
+```
+1. NEWOBweak      → OB detected, not yet color-aligned
+2. OBweakTOstrong → Candle confirmed alignment
+3. OBstrongTOUCH  → Price returned to the zone
+4. OBvPOCTOUCH    → Price hit the vPOC inside the OB
+5. OBtoBB         → Price broke through → Breaker Block
+6. BBTOUCH        → Price retested the Breaker Block
+7. BBvPOCTOUCH    → Price hit the vPOC inside the BB
+```
+
+Common OB paths:
+
+- **Strong setup:** `NEWOBstrong` → `OBstrongTOUCH`
+- **Upgrade path:** `NEWOBweak` → `OBweakTOstrong` → `OBstrongTOUCH`
+- **Invalidation:** `NEWOBstrong` → `OBtoBB` → `BBTOUCH`
+- **Quick touch:** `NEWOBweak` → `OBweakTOUCH`
+
+### Structure Event Lifecycle
+
+Market structure events follow this pattern:
+
+```
+Uptrend established:
+1. NEWCHoCH (direction: Up)   → First swing high broken, trend reversal
+2. NEWBoS (direction: Up)     → Higher low broken, trend continuation
+3. BoSTOUCH                   → Price retests the BOS level
+4. NEWCHoCH (direction: Down) → Swing low broken, trend reversal
+
+Downtrend established:
+1. NEWCHoCH (direction: Down) → First swing low broken, trend reversal
+2. NEWBoS (direction: Down)   → Lower high broken, trend continuation
+3. CHoCHTOUCH                 → Price retests the CHoCH level
 ```
 
 ---
 
 ## 🛠️ Troubleshooting
 
-### No Webhooks Received
-- Verify webhook URL is correct in ATAS settings
-- Check "Enable Webhook" checkbox is ON
-- Confirm indicator is active on chart
+### No Webhook Messages Received
+
+- Verify webhook URL is correct in ATAS indicator settings
+- Confirm the **Webhook URL** checkbox is enabled (not just the URL field)
+- Check indicator is loaded on a chart with live or replay data
 - Test with webhook.site first
 
-### Duplicate Messages
-- Check if multiple PatternAction instances on same chart
-- Verify webhook URL configured only once
-- Each chart/timeframe combination should have unique webhook path
+### Price/touchPrice Field is null
 
-### Missing Price Field
-- `price` field is `null` for formation events (NEWOBstrong, NEWOBweak)
-- `price` field contains value only for touch events
-- This is expected behavior, not an error
+- This is expected for creation events (`NEWOBstrong`, `NEWOBweak`, `OBweakTOstrong`, `OBtoBB`, `NEWCHoCH`, `NEWBoS`)
+- Price fields are only populated on touch events when price enters the zone
+
+### barTime and datetime Show Same Value
+
+- This is normal during live trading
+- They differ during Market Replay (barTime = historical, datetime = current system clock)
+
+### Structure Events Not Firing
+
+- Ensure **Enable Structure (CHoCH/BOS)** is enabled in the indicator settings
+- Structure events require swing points to be detected first
+- Check that sufficient price history is loaded
+
+### Too Many Messages
+
+- Focus on specific event types using a filter node
+- Use larger timeframes (fewer events = fewer webhooks)
+- Filter by direction if you only trade one trend direction
 
 ---
 
 ## 📚 Related Documentation
 
-- [Getting Started with Webhooks](../Getting-Started/02-Your-First-Webhook.md)
+- [semaPHorek Webhook Format](../Webhook-Reference/semaPHorek-Webhook-Format.md)
+- [Your First Webhook Receiver](../Getting-Started/02-Your-First-Webhook.md)
 - [Testing Your Webhooks](../Getting-Started/03-Testing-Webhooks.md)
 
 ---
 
-*Last Updated: October 15, 2025*
-*Pavel Horák - ATAS Platform Expert & Official Partner*
+*Last Updated: January 28, 2026*
+*Version: 2.13 - Structure Webhooks*

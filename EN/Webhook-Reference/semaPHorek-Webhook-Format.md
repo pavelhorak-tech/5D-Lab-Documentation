@@ -5,28 +5,34 @@
 
 ---
 
-## 📊 Message Format
+## Message Format
 
 ```
-DD/MM/YYYY HH:MM:SS.fff INSTRUMENT TIMEFRAME LIGHTS STATUS CONDITIONS BARNUMBER OPEN HIGH LOW CLOSE VPOC
-```
-
----
-
-## 📋 Example Message
-
-```
-25/09/2025 18:27:08.861 MNQ 4Renko 5 C 111111101 37748 24576.75 24577.50 24576.25 24577.50 24576.75
+DD/MM/YYYY HH:MM:SS.fff BARTIME INSTRUMENT TIMEFRAME LIGHTS STATUS CONDITIONS BARNUMBER OPEN HIGH LOW CLOSE VPOC
 ```
 
 ---
 
-## 🔍 Field Breakdown
+## Example Message
+
+```
+25/09/2025 18:27:08.861 2025-09-25T18:25:00 MNQ 4Renko 5 C 111111101 37748 24576.75 24577.50 24576.25 24577.50 24576.75
+```
+
+---
+
+## Field Breakdown
 
 ### Date & Time
 - **Date:** `DD/MM/YYYY` format (e.g., `25/09/2025`)
 - **Time:** `HH:MM:SS.fff` with milliseconds (e.g., `18:27:08.861`)
 - **Timezone:** Always Prague time (CET/CEST)
+
+### Bar Time
+- **Format:** ISO 8601 (`yyyy-MM-ddTHH:mm:ss`)
+- **Source:** Candle timestamp from chart data
+- **Purpose:** Essential for Market Replay backtesting — correlates webhook event to specific historical candle
+- **Note:** During live trading, barTime is close to datetime. During Market Replay, barTime shows historical candle time while datetime shows current system time.
 
 ### Instrument & Timeframe
 - **Instrument:** Trading symbol (e.g., `MNQ`, `ES`, `NQ`)
@@ -56,9 +62,9 @@ Position-based representation of 9 conditions:
 | 9 | vPOC Positioning | Volume Point of Control location |
 
 **Example:** `111111101`
-- Positions 1-7: ✅ Met (all conditions satisfied)
-- Position 8: ✅ Met
-- Position 9: ❌ Not met (vPOC positioning doesn't qualify)
+- Positions 1-7: Met (all conditions satisfied)
+- Position 8: Met
+- Position 9: Not met (vPOC positioning doesn't qualify)
 
 **Result:** 8/9 conditions = 8 Lights
 
@@ -73,7 +79,7 @@ Position-based representation of 9 conditions:
 
 ---
 
-## 🎯 Signal Quality Interpretation
+## Signal Quality Interpretation
 
 ### Green Light (7-9 Lights)
 **Strong institutional footprint detected**
@@ -95,7 +101,7 @@ Position-based representation of 9 conditions:
 
 ---
 
-## 🔧 n8n Webhook Configuration
+## n8n Webhook Configuration
 
 ### Webhook URL Setup
 1. Create webhook node in n8n
@@ -116,17 +122,18 @@ return {
   json: {
     date: fields[0],
     time: fields[1],
-    instrument: fields[2],
-    timeframe: fields[3],
-    lights: parseInt(fields[4]),
-    status: fields[5],
-    conditions: fields[6],
-    barNumber: parseInt(fields[7]),
-    open: parseFloat(fields[8]),
-    high: parseFloat(fields[9]),
-    low: parseFloat(fields[10]),
-    close: parseFloat(fields[11]),
-    vpoc: parseFloat(fields[12])
+    barTime: fields[2],
+    instrument: fields[3],
+    timeframe: fields[4],
+    lights: parseInt(fields[5]),
+    status: fields[6],
+    conditions: fields[7],
+    barNumber: parseInt(fields[8]),
+    open: parseFloat(fields[9]),
+    high: parseFloat(fields[10]),
+    low: parseFloat(fields[11]),
+    close: parseFloat(fields[12]),
+    vpoc: parseFloat(fields[13])
   }
 };
 ```
@@ -144,33 +151,34 @@ if ($json.lights >= 7) {
 
 ---
 
-## 📱 Telegram Alert Example
+## Telegram Alert Example
 
 **Format for trading alerts:**
 
 ```
-🚦 semaPHorek Signal
+semaPHorek Signal
 
-🟢 9 Lights | MNQ 4Renko
-📊 OHLC: 24576.75 / 24577.50 / 24576.25 / 24577.50
-📍 vPOC: 24576.75
-🕐 18:27:08 CET
+9 Lights | MNQ 4Renko
+OHLC: 24576.75 / 24577.50 / 24576.25 / 24577.50
+vPOC: 24576.75
+Bar Time: 2025-09-25T18:25:00
+18:27:08 CET
 
 Conditions: 111111101
-✅ Absorption Size
-✅ Absorption Amount
-✅ PowerBar Volume
-✅ Absolute Volume
-✅ Delta
-✅ Finished Business
-✅ Diagonal Imbalances
-✅ Smart Money Tape
-❌ vPOC Positioning
+Absorption Size: YES
+Absorption Amount: YES
+PowerBar Volume: YES
+Absolute Volume: YES
+Delta: YES
+Finished Business: YES
+Diagonal Imbalances: YES
+Smart Money Tape: YES
+vPOC Positioning: NO
 ```
 
 ---
 
-## ⚙️ Advanced: Condition Parsing
+## Advanced: Condition Parsing
 
 To extract individual condition states:
 
@@ -201,7 +209,7 @@ return { json: { conditions: summary } };
 
 ---
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 ### No Webhook Messages Received
 - Verify webhook URL is correct in ATAS settings
@@ -221,12 +229,12 @@ return { json: { conditions: summary } };
 
 ---
 
-## 📚 Related Documentation
+## Related Documentation
 
 - [Your First Webhook Receiver](../Getting-Started/02-Your-First-Webhook.md)
 - [Testing Your Webhooks](../Getting-Started/03-Testing-Webhooks.md)
 
 ---
 
-*Last Updated: October 15, 2025*
-*Pavel Horák - ATAS Platform Expert & Official Partner*
+*Last Updated: February 24, 2026*
+*Pavel Horak - ATAS Platform Expert & Official Partner*

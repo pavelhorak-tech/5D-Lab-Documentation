@@ -395,3 +395,4 @@ Log every level interaction with market context for later analysis.
 ---
 
 *Documentation version: 1.0 | Last updated: October 15, 2025*
+*Pavel Horák - ATAS Platform | Expert Trading Automation Architect | 5D Lab Pioneer*
