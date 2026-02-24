@@ -78,11 +78,17 @@ Transform from manual signal watching to systematic trading intelligence through
 ## 💡 Pricing
 
 - **Month 1:** FREE trial (Oct 15 - Nov 15, 2025)
-- **Early Bird:** €99/month (subscribe before Nov 15) - LOCKED FOREVER
-- **Regular:** €179/month (after Nov 15)
+- **Early Bird:** €99/month (subscribe before April 15th, 2026) - LOCKED FOREVER
+- **Regular:** €179/month (after April 15, 2026)
 
 ---
 
-*Last Updated: October 15, 2025*
+## 📋 Changelog
+
+**2026-02-24:** semaPHorek webhook — added `barTime` field for Market Replay compatibility
+
+---
+
+*Last Updated: February 24, 2026*
 *Pavel Horák - ATAS Platform Expert & Official Partner*
 *The Fifth Dimension - Systematic Trading Intelligence*
