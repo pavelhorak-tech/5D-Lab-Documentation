@@ -14,30 +14,31 @@
 
 ### Webhook Reference
 Complete webhook format documentation for all Ultra indicators:
-- [semaPHorek Webhook Format](Webhook-Reference/semaPHorek-Webhook-Format.md)
-- [Linescope Webhook Format](Webhook-Reference/Linescope-Webhook-Format.md)
-- [PatternAction Webhook Format](Webhook-Reference/PatternAction-Webhook-Format.md)
+- [🚥 semaPHorek Webhook Format](Webhook-Reference/semaPHorek-Webhook-Format.md)
+- [🖊️ Linescope Webhook Format](Webhook-Reference/Linescope-Webhook-Format.md)
+- [🕵️ NODEtective Webhook Format](Webhook-Reference/NODEtective-Webhook-Format.md)
+- [🔀 PatternAction Webhook Format](Webhook-Reference/PatternAction-Webhook-Format.md)
+- [⚖️ VWAP Ultra Webhook Format](Webhook-Reference/VWAP-Ultra-Webhook-Format.md)
 
 **Additional Indicators (Coming Soon):**
-- NODEtective - Webhook update in development
-- R.A.I.N. - Webhook update in progress
+- ☔ R.A.I.N. Ultra — Webhook update in progress
 
 ---
 
 ## 🎯 Quick Links
 
-**Discord Community:** [pavelhorak.tech Discord](https://discord.gg/vxWZt2XQUZ)
+**Discord Community:** [pavelhorak.tech Discord](https://t.ly/dcpavel)
 **Website:** [5dlab.ph](https://5dlab.ph)
-**Support Channel:** #-chat or #-diskussion (Discord)
+**Support Channel:** #support-hilfe (Discord)
 
 ---
 
 ## 📖 How to Use This Documentation
 
-1. **Click any link above** - GitHub renders markdown beautifully in your browser
-2. **No downloads needed** - Read directly on GitHub
-3. **Always up-to-date** - These docs are version-controlled and maintained
-4. **Mobile-friendly** - Works perfectly on phones and tablets
+1. **Click any link above** — GitHub renders markdown beautifully in your browser
+2. **No downloads needed** — Read directly on GitHub
+3. **Always up-to-date** — These docs are version-controlled and maintained
+4. **Mobile-friendly** — Works perfectly on phones and tablets
 
 ---
 
@@ -46,19 +47,18 @@ Complete webhook format documentation for all Ultra indicators:
 Transform from manual signal watching to systematic trading intelligence through webhook automation and n8n workflows.
 
 **What You Get:**
-- 3 foundation videos per month
+- 9 modules over 6 months
 - Complete webhook documentation
 - n8n workflow templates
-- Community support (#-chat, #-diskussion)
-- Showcase gallery (#-showcase, #-galerie)
+- Community support (#support-hilfe)
+- Showcase gallery (#showcase, #galerie)
 
 **Pricing:**
-- Month 1: **FREE trial** (all lifetime Ultra license holders)
-- Early Bird (by Nov 15): **€99/month** - LOCKED FOREVER
-- Regular (after Nov 15): **€179/month**
+- **Early Bird (by April 15):** **€99/month** — LOCKED FOREVER
+- **Regular (after April 15):** **€179/month**
 
 ---
 
-*Last Updated: October 15, 2025*
-*Pavel Horák - ATAS Platform Expert & Official Partner*
-*The Fifth Dimension - Systematic Trading Intelligence*
+*Last Updated: March 6, 2026*
+*Pavel Horák — ATAS Platform Expert & Official Partner*
+*The Fifth Dimension — Systematic Trading Intelligence*
